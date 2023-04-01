@@ -27,22 +27,28 @@ const UploadImg: React.FC = () => {
     //   })
     //   .then(function () {});
 
-    const formData = new FormData();
+    const forms = new FormData();
 
-    formData.append("name", "Natty");
+    forms.append("name", "Natty");
     // formData.append('image', filesToUpload![0]);
-    formData.append("email", "nattynengeda@gmail.com");
+    forms.append("email", "nattynengeda@gmail.com");
 
-    const result = await fetch(url, {
-      method: "POST",
-      body: formData,
+    await axios.post(url, forms, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((errror) => console.error(errror));
+    });
+
+    // const result = await fetch(url, {
+    //   method: "POST",
+    //   body: forms,
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data))
+    //   .catch((errror) => console.error(errror));
   };
   return (
     <div className="min-h-screen">
