@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FileUpload from "react-mui-fileuploader";
 import axios from "axios";
 
-const url = "http://localhost:11000/test";
+const url = "http://localhost:11000/uploadImages";
 
 const UploadImg: React.FC = () => {
   const [filesToUpload, setfilesToUpload] = useState<File[]>();
@@ -16,39 +16,26 @@ const UploadImg: React.FC = () => {
     alert("Error");
   };
   const handleUpload = async () => {
-    // let formData = new FormData();
-    // filesToUpload?.forEach((file) => formData.append("image", file));
-    // formData.append("name", name);
-    // console.log(formData);
-
-    // const result = await axios
-    //   .post(url, {
-    //     name: "Natty",
-    //   })
-    //   .then(function () {});
-
     const forms = new FormData();
 
-    forms.append("name", "Natty");
-    // formData.append('image', filesToUpload![0]);
-    forms.append("email", "nattynengeda@gmail.com");
-
-    await axios.post(url, forms, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    filesToUpload?.forEach((file) => {
+      forms.append("image", file),
+        forms.append("imageSize", file.size.toString());
     });
+    forms.append("name", name);
 
-    // const result = await fetch(url, {
-    //   method: "POST",
-    //   body: forms,
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data))
-    //   .catch((errror) => console.error(errror));
+    await axios
+      .post(url, forms, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(function (response) {
+        if (response.data.send === "Success") {
+          alert("Success");
+          window.location.reload();
+        }
+      });
   };
   return (
     <div className="min-h-screen">
@@ -84,7 +71,7 @@ const UploadImg: React.FC = () => {
             "fill it or remove it to use the default error message"
           }
           allowedExtensions={["jpg", "jpeg", "png", "webp", "gif", "svg"]}
-          // onFilesChange={handleFilesChange}
+          onFilesChange={handleFilesChange}
           onError={handleFileUPloadError}
           imageSrc=""
           BannerProps={{ elevation: 5, variant: "outlined" }}
